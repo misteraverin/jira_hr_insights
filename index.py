@@ -46,12 +46,12 @@ def hook():
             return make_response(msg, 500)
 
 
-@app.route('/events/', methods=['GET'])
+@app.route('/events', methods=['GET'])
 def events():
     add_event()
 
     events_data = {}
-    events_data['events'] = events_list
+    events_data['events'] = {'name': 'success', 'id': 13}
     response = jsonify(events_data)
     response.status_code = 200
 
