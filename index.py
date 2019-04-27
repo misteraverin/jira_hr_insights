@@ -58,5 +58,14 @@ def events():
     return response
 
 
+@app.route('/', methods=['GET'])
+def index():
+    events = {'name': 'success', 'id': 13}
+    response = jsonify(events)
+    response.status_code = 200
+
+    return response
+
+
 if __name__ == '__main__':
     app.run()
