@@ -51,7 +51,7 @@ def events():
     add_event()
 
     events_data = {}
-    events_data['events'] = {'name': 'success', 'id': 13}
+    events_data['events'] = events_list
     response = jsonify(events_data)
     response.status_code = 200
 
