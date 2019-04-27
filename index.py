@@ -19,6 +19,7 @@ def add_event():
         'score': random.randint(1, 10),
     })
 
+
 @app.route('/', methods=['POST'])
 def hook():
     if request.method == 'POST':
@@ -58,4 +59,4 @@ def events():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True)
+    app.run()
