@@ -68,15 +68,15 @@ def events():
                 except:
                     new_event_status = 'doing'
 
-                # score = 1
-                # if new_event_status == 'Done':
-                #     score = 5
-                # elif new_event_status == 'Security':
-                #     score = 3
-                # elif new_event_status == 'Review':
-                #     score = 1
-                # elif new_event_status == 'Testing':
-                #     score = 2
+                score = 1
+                if new_event_status == 'Done':
+                    score = 5
+                elif new_event_status == 'Security':
+                    score = 3
+                elif new_event_status == 'Review':
+                    score = 1
+                elif new_event_status == 'Testing':
+                    score = 2
 
                 events_data = {}
                 events_list.append(add_event(
