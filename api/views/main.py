@@ -82,7 +82,7 @@ def events():
                 events_list.append(add_event(
                     event_id,
                     '{0}: {1}'.format(event_id, event_name),
-                    3,
+                    score,
                     new_event_status,
                 ))
 
