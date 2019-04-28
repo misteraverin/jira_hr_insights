@@ -11,12 +11,13 @@ main = Blueprint("main", __name__)  # initialize blueprint
 events_list = []
 
 
-def add_event():
-    events_list.append({
-        'id': random.randint(1, 50),
-        'name': 'issue: updated',
-        'score': random.randint(1, 10),
-    })
+def add_event(event_id, name, score, status):
+    return {
+        'id': event_id,
+        'name': name,
+        'score': score,
+        'status': status,
+    }
 
 
 # function that is called when you visit /
@@ -58,7 +59,6 @@ def events():
             return str(string_to_date(end_of_holiday) - string_to_date(start_of_holiday)).split()[0]
 
         try:
-            return "<h1>Updated</h1>"
             jdata = json.loads(data)
             if jdata['webhookEvent'] == 'jira:issue_updated':
                 return "<h1>Updated</h1>"
