@@ -36,7 +36,7 @@ def get_persons():
     return create_response(data={"persons": serialize_list(persons)})
 
 
-@main.route('/events', methods=['POST', 'GET'])
+@main.route('/events/', methods=['POST', 'GET'])
 def events():
     if request.method == 'GET':
         events_data = {}
