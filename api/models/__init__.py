@@ -3,8 +3,9 @@
 # to prevent circular dependencies
 from .Email import Email
 from .Person import Person
+from .Event import Event
 from .base import db
 
-__all__ = ["Email", "Person", "db"]
+__all__ = ["Email", "Person", "Event", "db"]
 
 # You must import all of the new Models you create to this page
