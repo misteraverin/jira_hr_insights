@@ -62,12 +62,22 @@ def events():
             if jdata['webhookEvent'] == 'jira:issue_updated':
                 event_id = jdata['issue']['key']
                 event_name = jdata['issue']['fields']['summary']
-                new_event_status = 'status'
+                new_event_status = jdata['changelog']['items'][0]['toString']
+                score = 1
+                if new_event_status == 'Done':
+                    score = 5
+                elif new_event_status == 'Security':
+                    score = 3
+                elif new_event_status == 'Review':
+                    score = 1
+                elif new_event_status == 'Testing':
+                    score = 2
+
                 print(event_id, event_name, new_event_status)
                 events_list.append(add_event(
                     event_id,
                     '{0}: {1}'.format(event_id, event_name),
-                    2,
+                    score,
                     new_event_status,
                 ))
                 events_data = {}
