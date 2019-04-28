@@ -61,31 +61,42 @@ def events():
         try:
             jdata = json.loads(data)
             if jdata['webhookEvent'] == 'jira:issue_updated':
-                event_id = jdata['issue']['key']
-                event_name = jdata['issue']['fields']['summary']
-                new_event_status = jdata['changelog']['items'][0]['toString']
-                score = 1
-                if new_event_status == 'Done':
-                    score = 5
-                elif new_event_status == 'Security':
-                    score = 3
-                elif new_event_status == 'Review':
-                    score = 1
-                elif new_event_status == 'Testing':
-                    score = 2
-
-                print(event_id, event_name, new_event_status)
-                events_list.append(add_event(
-                    event_id,
-                    '{0}: {1}'.format(event_id, event_name),
-                    score,
-                    new_event_status,
-                ))
                 events_data = {}
+
+                events_list.append(add_event(
+                    13,
+                    'name',
+                    3,
+                    'done',
+                ))
+
                 events_data['events'] = events_list
                 response = jsonify(events_data)
                 response.status_code = 200
                 return response
+
+
+                # event_id = jdata['issue']['key']
+                # event_name = jdata['issue']['fields']['summary']
+                # new_event_status = jdata['changelog']['items'][0]['toString']
+                # score = 1
+                # if new_event_status == 'Done':
+                #     score = 5
+                # elif new_event_status == 'Security':
+                #     score = 3
+                # elif new_event_status == 'Review':
+                #     score = 1
+                # elif new_event_status == 'Testing':
+                #     score = 2
+                #
+                # print(event_id, event_name, new_event_status)
+                # events_list.append(add_event(
+                #     event_id,
+                #     '{0}: {1}'.format(event_id, event_name),
+                #     score,
+                #     new_event_status,
+                # ))
+
             return make_response('no events', 200)
         except:
             msg = 'Incorrect data! Can not parse to json format'
