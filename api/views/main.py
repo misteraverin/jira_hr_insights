@@ -1,6 +1,8 @@
 import random
+import json
+from datetime import datetime
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from api.models import db, Person, Email
 from api.core import create_response, serialize_list, logger
 
@@ -34,16 +36,50 @@ def get_persons():
     return create_response(data={"persons": serialize_list(persons)})
 
 
-@main.route('/events', methods=['GET'])
+@main.route('/events', methods=['POST', 'GET'])
 def events():
-    add_event()
+    if request.method == 'GET':
+        events_data = {}
+        events_data['events'] = events_list
+        response = jsonify(events_data)
+        response.status_code = 200
+        return response
+    elif request.method == 'POST':
 
-    events_data = {}
-    events_data['events'] = events_list
-    response = jsonify(events_data)
-    response.status_code = 200
+        data = request.data
+        data = data.decode('utf-8')
 
-    return response
+        def string_to_date(datestring):
+            """Convert string with date from Jira to Python date type"""
+            return datetime.strptime(datestring, '%Y-%m-%d')
+
+        def holiday_duration(start_of_holiday, end_of_holiday):
+            """Calculate duration of holiday"""
+            return str(string_to_date(end_of_holiday) - string_to_date(start_of_holiday)).split()[0]
+
+        try:
+            jdata = json.loads(data)
+            if jdata['webhookEvent'] == 'jira:issue_updated':
+                event_id = jdata['issue']['key']
+                event_name = jdata['issue']['fields']['summary']
+                new_event_status = jdata['changelog']['items'][0]['toString']
+                print(event_id, event_name, new_event_status)
+                events_list.append(add_event(
+                    event_id,
+                    '{0}: {1}'.format(event_id, event_name),
+                    2,
+                    new_event_status,
+                ))
+                events_data = {}
+                events_data['events'] = events_list
+                response = jsonify(events_data)
+                response.status_code = 200
+                return response
+            return make_response('no events', 200)
+        except:
+            msg = 'Incorrect data! Can not parse to json format'
+            print(msg)
+            return make_response(msg, 200)
 
 
 # POST request for /persons
