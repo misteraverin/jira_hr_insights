@@ -61,7 +61,6 @@ def events():
         try:
             jdata = json.loads(data)
             if jdata['webhookEvent'] == 'jira:issue_updated':
-                return "<h1>Updated</h1>"
                 event_id = jdata['issue']['key']
                 event_name = jdata['issue']['fields']['summary']
                 new_event_status = jdata['changelog']['items'][0]['toString']
