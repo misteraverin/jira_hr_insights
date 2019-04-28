@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 from flask import Blueprint, request, jsonify, make_response
-from api.models import db, Person, Email, Event
+from api.models import db, Person, Email
 from api.core import create_response, serialize_list, logger
 
 main = Blueprint("main", __name__)  # initialize blueprint
@@ -40,15 +40,11 @@ def get_persons():
 @main.route('/events/', methods=['POST', 'GET'])
 def events():
     if request.method == 'GET':
-        persons = Event.query.all()
-        return create_response(data={"events": serialize_list(persons)})
-        #
-        #
-        # events_data = {}
-        # events_data['events'] = events_list
-        # response = jsonify(events_data)
-        # response.status_code = 200
-        # return response
+        events_data = {}
+        events_data['events'] = events_list
+        response = jsonify(events_data)
+        response.status_code = 200
+        return response
     elif request.method == 'POST':
 
         data = request.data
@@ -82,19 +78,18 @@ def events():
                 elif new_event_status == 'Testing':
                     score = 2
 
-                event = Event(
-                    event_id=event_id,
-                    score=score,
-                    status=new_event_status,
-                    name=event_name,
-                )
-                # commit it to database
-                db.session.add_all([event])
-                db.session.commit()
-                response = jsonify({})
+                events_data = {}
+                events_list.append(add_event(
+                    event_id,
+                    '{0}: {1}'.format(event_id, event_name),
+                    score,
+                    new_event_status,
+                ))
+
+                events_data['events'] = events_list
+                response = jsonify(events_data)
                 response.status_code = 200
                 return response
-
 
             return make_response('no events', 200)
         except:
