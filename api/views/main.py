@@ -40,15 +40,15 @@ def get_persons():
 @main.route('/events/', methods=['POST', 'GET'])
 def events():
     if request.method == 'GET':
-        persons = Person.query.all()
+        persons = Event.query.all()
         return create_response(data={"events": serialize_list(persons)})
-
-
-        events_data = {}
-        events_data['events'] = events_list
-        response = jsonify(events_data)
-        response.status_code = 200
-        return response
+        #
+        #
+        # events_data = {}
+        # events_data['events'] = events_list
+        # response = jsonify(events_data)
+        # response.status_code = 200
+        # return response
     elif request.method == 'POST':
 
         data = request.data
