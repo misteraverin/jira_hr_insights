@@ -58,8 +58,10 @@ def events():
             return str(string_to_date(end_of_holiday) - string_to_date(start_of_holiday)).split()[0]
 
         try:
+            return "<h1>Updated</h1>"
             jdata = json.loads(data)
             if jdata['webhookEvent'] == 'jira:issue_updated':
+                return "<h1>Updated</h1>"
                 event_id = jdata['issue']['key']
                 event_name = jdata['issue']['fields']['summary']
                 new_event_status = jdata['changelog']['items'][0]['toString']
