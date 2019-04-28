@@ -63,23 +63,11 @@ def events():
             if jdata['webhookEvent'] == 'jira:issue_updated':
                 event_id = jdata['issue']['key']
                 event_name = jdata['issue']['fields']['summary']
+                try:
+                    new_event_status = jdata['changelog']['items'][0]['toString']
+                except:
+                    new_event_status = 'doing'
 
-                events_data = {}
-                events_list.append(add_event(
-                    event_id,
-                    '{0}: {1}'.format(event_id, event_name),
-                    3,
-                    'done',
-                ))
-
-                events_data['events'] = events_list
-                response = jsonify(events_data)
-                response.status_code = 200
-                return response
-
-
-
-                # new_event_status = jdata['changelog']['items'][0]['toString']
                 # score = 1
                 # if new_event_status == 'Done':
                 #     score = 5
@@ -89,14 +77,20 @@ def events():
                 #     score = 1
                 # elif new_event_status == 'Testing':
                 #     score = 2
-                #
-                # print(event_id, event_name, new_event_status)
-                # events_list.append(add_event(
-                #     event_id,
-                #     '{0}: {1}'.format(event_id, event_name),
-                #     score,
-                #     new_event_status,
-                # ))
+
+                events_data = {}
+                events_list.append(add_event(
+                    event_id,
+                    '{0}: {1}'.format(event_id, event_name),
+                    3,
+                    new_event_status,
+                ))
+
+                events_data['events'] = events_list
+                response = jsonify(events_data)
+                response.status_code = 200
+                return response
+
 
             return make_response('no events', 200)
         except:
